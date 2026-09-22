@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tints Calculator</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+input {
+    font-size: 16px;
+    padding: 8px;
+    width: 150px;
+}
+
+button {
+    padding: 8px 16px;
+    margin-left: 10px;
+}
+
+.row {
+display: grid;
+grid-template-columns: 180px 50px 120px;
+align-items: center;
+gap: 15px;
+margin: 12px 0;
+}
+
+.swatch {
+    width: 50px;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.hex {
+    font-family: Consolas, monospace;
+    font-size: 16px;
+    min-width: 100px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Flex - Primary colour tints calculator</h1>
+
+<p>Enter the client's primary colour hex code (without #)</p>
+
+<input id="baseInput" value="0857C3">
+<button onclick="generate()">Generate</button>
+
+<hr>
+
+<div class="row">
+    <strong>Primary colour</strong>
+    <div id="sw1" class="swatch"></div>
+    <div id="hex1" class="hex"></div>
+</div>
+
+<div class="row">
+    <strong>Chart-benefits</strong>
+    <div id="sw2" class="swatch"></div>
+    <div id="hex2" class="hex"></div>
+</div>
+
+<div class="row">
+    <strong>Chart-salary</strong>
+    <div id="sw3" class="swatch"></div>
+    <div id="hex3" class="hex"></div>
+</div>
+
+<div class="row">
+    <strong>Button-hover</strong>
+    <div id="sw4" class="swatch"></div>
+    <div id="hex4" class="hex"></div>
+</div>
+
+<script>
+
+function lighten(hex, amount) {
+
+    let r = parseInt(hex.substring(0,2),16);
+    let g = parseInt(hex.substring(2,4),16);
+    let b = parseInt(hex.substring(4,6),16);
+
+    r = Math.round(r + (255-r) * amount);
+    g = Math.round(g + (255-g) * amount);
+    b = Math.round(b + (255-b) * amount);
+
+    return "#" +
+        r.toString(16).padStart(2,"0") +
+        g.toString(16).padStart(2,"0") +
+        b.toString(16).padStart(2,"0");
+}
+
+function update(idSwatch,idHex,color){
+    document.getElementById(idSwatch).style.backgroundColor = color;
+    document.getElementById(idHex).textContent = color.toUpperCase();
+}
+
+function generate(){
+
+    let base = document
+        .getElementById("baseInput")
+        .value
+        .replace("#","");
+
+    if(base.length !== 6){
+        alert("Please enter a valid 6 digit hex code.");
+        return;
+    }
+
+    const c1 = "#" + base;
+    const c2 = lighten(base,0.14);
+    const c3 = lighten(base,0.22);
+    const c4 = lighten(base,0.31);
+
+    update("sw1","hex1",c1);
+    update("sw2","hex2",c2);
+    update("sw3","hex3",c3);
+    update("sw4","hex4",c4);
+}
+
+generate();
+
+</script>
+
+</body>
+</html>
